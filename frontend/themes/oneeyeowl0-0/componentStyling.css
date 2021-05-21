@@ -1,0 +1,18 @@
+.heading {
+    align-self: center;
+
+}
+
+.horizontalConstraint{
+    align-content: flex-start;
+    /*justify-content: space-evenly;*/
+    align-items: flex-end;
+    align-self: stretch;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.welcome{
+    background-color: #e9f8ef;
+    border-radius: 5px;
+}

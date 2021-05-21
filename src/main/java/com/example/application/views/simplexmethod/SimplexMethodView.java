@@ -1,33 +1,25 @@
 package com.example.application.views.simplexmethod;
 
-import com.example.application.data.entity.SamplePerson;
 import com.example.application.data.service.SamplePersonService;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.template.Id;
 import com.vaadin.flow.component.littemplate.LitTemplate;
-import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.data.renderer.TemplateRenderer;
-import com.vaadin.flow.component.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,24 +33,41 @@ import java.util.List;
 @PageTitle("Simplex Method")
 @Tag("simplex-method-view")
 @JsModule("./views/simplexmethod/simplex-method-view.ts")
+
+@CssImport("./themes/oneeyeowl0-0/componentStyling.css")
 public class SimplexMethodView extends LitTemplate {
 
-    private int decisionVar;
-    private int constraint;
+    private int totalDecisionVariables;
+    private int totalConstraints;
+
+//    private List<TextField> Constraint_TextField = new ArrayList<>();
 
     @Id("dv")
     private TextField dv;
     @Id("nocons")
     private TextField nocons;
+
     @Id("action")
     private Button action;
-    @Id("form")
-    private FormLayout form;
+
+    @Id("constraint_h3")
+    private H3 constraint_h3;
     @Id("obj_function_h3")
     private H3 obj_function_h3;
 
+    @Id("constraintVertticalForm")
+    private VerticalLayout constraintVertticalForm;
+    @Id("topHL")
+    private HorizontalLayout topHL;
+    @Id("ofForm")
+    private HorizontalLayout ofForm;
+
+
     public SimplexMethodView(SamplePersonService personService) {
+//        topHL.getStyle().set("border", "1px solid #9E9E9E");
+
         obj_function_h3.setVisible(false);
+        constraint_h3.setVisible(false);
 
         setToIntegerOnlyField(nocons);
         setToIntegerOnlyField(dv);
@@ -68,29 +77,58 @@ public class SimplexMethodView extends LitTemplate {
 
 
     private void showButtonClickedMessage(ClickEvent<Button> buttonClickEvent) {
-        form.removeAll();
-        obj_function_h3.setVisible(true);
-        int decisionVar = Integer.parseInt(dv.getValue());
-        int constraint = Integer.parseInt(nocons.getValue());
-        setDecisionVar(decisionVar);
-        setConstraint(constraint);
-
         List<TextField> objectiveFunction_TextField = new ArrayList<>();
-        for (int index = 0; index < getDecisionVar(); index++) {
+        // clear Objective Function and Constraints Forms.
+        ofForm.removeAll();
+        ofForm.addClassName("horizontalConstraint");
+        ofForm.getStyle().set("margin-left", "9%");
+
+        constraintVertticalForm.removeAll();
+
+        // set Visible true
+        obj_function_h3.setVisible(true);
+        constraint_h3.setVisible(true);
+
+        // no of DV and Cons.
+        setTotalDecisionVariables(Integer.parseInt(dv.getValue()));
+        setTotalConstraints(Integer.parseInt(nocons.getValue()));
+
+        for (int index = 0; index < getTotalDecisionVariables(); index++) {
             TextField titleField = new TextField();
             titleField.setLabel("Decision variable x" + (index + 1));
             titleField.setPlaceholder("x" + (index + 1));
-            titleField.setWidth("5%");
-//            titleField.setMaxWidth("25%");
+            titleField.setWidth("14%");
 
             objectiveFunction_TextField.add(titleField);
-            form.add(objectiveFunction_TextField.get(index));
+            ofForm.add(objectiveFunction_TextField.get(index));
 
-            form.setResponsiveSteps(new FormLayout.ResponsiveStep("15%", index + 1));
+//            ofForm.setResponsiveSteps(new FormLayout.ResponsiveStep("15%", index + 1));
         }
 
 
-        objectiveFunction_TextField = null;
+        for (int cons = 1; cons <= totalConstraints; cons++) {
+
+            H4 constraintHeader = new H4("For Constraint :" + cons);
+            constraintHeader.addClassName("heading");
+
+            HorizontalLayout perConstraintData = new HorizontalLayout();
+            perConstraintData.addClassName("horizontalConstraint");
+            perConstraintData.add(constraintHeader);
+
+            for (int variable = 1; variable <= totalDecisionVariables; variable++) {
+
+                TextField constraintTextField = new TextField();
+                constraintTextField.setLabel("constraint x" + (variable));
+                constraintTextField.setPlaceholder("x" + (variable));
+                constraintTextField.setWidth("10%");
+
+                perConstraintData.add(constraintTextField);
+
+            }
+
+            constraintVertticalForm.add(perConstraintData);
+        }
+
 
     }
 
@@ -100,19 +138,19 @@ public class SimplexMethodView extends LitTemplate {
         field.setMaxLength(3);
     }
 
-    public int getDecisionVar() {
-        return decisionVar;
+    public int getTotalDecisionVariables() {
+        return totalDecisionVariables;
     }
 
-    public void setDecisionVar(int decisionVar) {
-        this.decisionVar = decisionVar;
+    public void setTotalDecisionVariables(int totalDecisionVariables) {
+        this.totalDecisionVariables = totalDecisionVariables;
     }
 
-    public int getConstraint() {
-        return constraint;
+    public int getTotalConstraints() {
+        return totalConstraints;
     }
 
-    public void setConstraint(int constraint) {
-        this.constraint = constraint;
+    public void setTotalConstraints(int totalConstraints) {
+        this.totalConstraints = totalConstraints;
     }
 }
