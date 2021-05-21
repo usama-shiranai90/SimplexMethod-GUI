@@ -69,9 +69,11 @@ public class SimplexMethodView extends LitTemplate {
         obj_function_h3.setVisible(false);
         constraint_h3.setVisible(false);
 
-        setToIntegerOnlyField(nocons);
-        setToIntegerOnlyField(dv);
-        action.addClickListener(this::showButtonClickedMessage);
+        if (nocons != null && dv != null) {
+            setToIntegerOnlyField(nocons);
+            setToIntegerOnlyField(dv);
+            action.addClickListener(this::showButtonClickedMessage);
+        }
 
     }
 
@@ -98,6 +100,7 @@ public class SimplexMethodView extends LitTemplate {
             titleField.setLabel("Decision variable x" + (index + 1));
             titleField.setPlaceholder("x" + (index + 1));
             titleField.setWidth("14%");
+            setToIntegerOnlyField(titleField);
 
             objectiveFunction_TextField.add(titleField);
             ofForm.add(objectiveFunction_TextField.get(index));
@@ -121,8 +124,15 @@ public class SimplexMethodView extends LitTemplate {
                 constraintTextField.setLabel("constraint x" + (variable));
                 constraintTextField.setPlaceholder("x" + (variable));
                 constraintTextField.setWidth("10%");
+                setToIntegerOnlyField(constraintTextField);
 
                 perConstraintData.add(constraintTextField);
+                if (variable == totalDecisionVariables) {
+                    TextField ProfitTextField = new TextField();
+                    ProfitTextField.setLabel("Profit");
+                    ProfitTextField.setWidth("10%");
+                    perConstraintData.add(ProfitTextField);
+                }
 
             }
 
