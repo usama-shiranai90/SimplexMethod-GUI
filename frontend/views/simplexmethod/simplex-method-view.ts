@@ -26,7 +26,7 @@ export class SimplexMethodView extends LitElement {
   <vaadin-vertical-layout style="justify-content: flex-end; align-items: center;">
    <h4>Run Demo Code</h4>
    <vaadin-button theme="icon" aria-label="Add new" id="sampleButton">
-    <iron-icon icon="lumo:plus" style="margin: var(--lumo-space-s); margin-top: var(--lumo-space-s);"></iron-icon>Run
+    <iron-icon icon="lumo:plus" style="margin: var(--lumo-space-s); margin-top: var(--lumo-space-s);"></iron-icon>Run 
    </vaadin-button>
   </vaadin-vertical-layout>
  </vaadin-horizontal-layout>
@@ -41,7 +41,7 @@ export class SimplexMethodView extends LitElement {
   </vaadin-vertical-layout>
   <vaadin-vertical-layout style="height: 100%; align-items: center; width: 100%; margin-left: var(--lumo-space-m); margin-right: var(--lumo-space-m); flex-direction: column;">
    <h3>Simplex Table</h3>
-   <vaadin-text-area style="width: 100%;"></vaadin-text-area>
+   <vaadin-text-area style="width: 100%;" id="simplexTableoutput" readonly></vaadin-text-area>
   </vaadin-vertical-layout>
   <div style="flex-grow:1; width:100%;" id="grid-wrapper">
    <slot name="vaadinGrid"></slot>

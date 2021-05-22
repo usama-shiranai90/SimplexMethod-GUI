@@ -1,12 +1,13 @@
 package com.example.application.SimplexPackage;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class LPModel {
 
-    private int sampleTest;
-    ArrayList<String> rowField = new ArrayList<>();
-    ArrayList<String> columnsField = new ArrayList<>();
+    private final int sampleTest;
 
     // starts from here.
     private LinkedList<Double> objectiveFunction;
@@ -14,7 +15,17 @@ public class LPModel {
     private LinkedList<Double> rsConstraint;
     private LinkedList<Assets.OperatorConstraints> operatorConstraints;
 
-    //     Existing problem solve as test.
+    StandardizedModel standardizedModel;
+
+    /**
+     * Constructor for Existing problem solve as test sample.
+     * <p>
+     * 1. calling 4 fill functions for :
+     * . objective function
+     * . left constraint
+     * . right constraint
+     * . operator
+     */
     public LPModel() {
         sampleTest = 0;
         // define OBJECTIVE FUNCTION  , Matrix Constraints.
@@ -28,28 +39,33 @@ public class LPModel {
         fillOperator(operatorConstraints);
         fillRightSideConstraint(rsConstraint);
 
+        standardizedModel = new StandardizedModel(objectiveFunction , lsConstraint , rsConstraint);
     }
+
 
     public LPModel(List<Double> objectfunction, LinkedList<LinkedList<Double>> lconstraint, List<Double> rconstraint) {
         sampleTest = 1;
+
         // define OBJECTIVE FUNCTION  , Matrix Constraints.
         objectiveFunction = new LinkedList<>(objectfunction);  // copies objective function ref here
         lsConstraint = new LinkedList<>(lconstraint);   // we need to call fillLeftSideConstraint to properly implement it.
         operatorConstraints = new LinkedList<>();  // simply (fillOperator) call function.
         rsConstraint = new LinkedList<>(rconstraint); // copies right side constraint here.
-
-
-//        fillLeftSideConstraint(lsConstraint , lconstraint);
         fillOperator(operatorConstraints);
+        printLPMODEL();
+
+
+        standardizedModel = new StandardizedModel(objectiveFunction , lsConstraint , rsConstraint);
 
     }
 
 
+    /**
+     * @param of Use for Filling Objective function LinkedList with values
+     */
     public void fillObjectiveFunction(LinkedList<Double> of) {
 
         of.addAll(Arrays.asList(2100.0, 6400.0, 5500.0, 6000.0));
-
-
     }
 
     public void fillLeftSideConstraint(LinkedList<LinkedList<Double>> lsConstraint, Double[][] constraintLeftSide) {
@@ -66,11 +82,11 @@ public class LPModel {
         int i = 0;
         while (i < constraintLeftSide.length) {
             lsConstraint.add(i, new LinkedList<>());
-//            lsConstraint.get(0).addAll(Arrays.asList(12.0, 8.0, 7.0, 8.0));
             lsConstraint.get(i).addAll(Arrays.asList(constraintLeftSide[i]));
             i++;
         }
     }
+
 
     public void fillRightSideConstraint(LinkedList<Double> rsConstraint) {
         Collections.addAll(rsConstraint,
@@ -87,7 +103,7 @@ public class LPModel {
     public String printLPMODEL() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("For Maximization \nZ = ");
+        builder.append("For Maximization Z = ");
         for (int i = 0; i < objectiveFunction.size(); i++) {
             builder.append(objectiveFunction.get(i)).append("x").append(i + 1);
             if (i != objectiveFunction.size() - 1) {
@@ -111,26 +127,32 @@ public class LPModel {
                 }
             }
 
+            /**    Comment section of printing LP Model Table.
+             * if (col < lsConstraint.size()) {
+             *                 System.out.println("chla");
+             *                 builder.append(lsConstraint.get(row).get(col)).append("x").append(col + 1).append(" ");
+             *
+             *                 if (col < lsConstraint.get(row).size() -1) {  // i != objectiveFunction.size() - 1
+             *                     builder.append(" + ");
+             *                 }
+             *                 if (col == lsConstraint.get(row).size() -1) { // 2 == 2
+             *                     builder.append(operatorConstraints.get(2)).append("  ")
+             *                             .append(rsConstraint.get(row)).append("\n");
+             *                 }
+             *                 col++;
+             *             }
+             *             else {
+             *                 col = 0;
+             *                 row++;
+             * //                --i;
+             */
+
         }
+        System.out.println(builder.toString());
         return builder.toString();
     }
 
     // getter and setters
-    public ArrayList<String> getRowField() {
-        return rowField;
-    }
-
-    public void setRowField(ArrayList<String> rowField) {
-        this.rowField = rowField;
-    }
-
-    public ArrayList<String> getColumnsField() {
-        return columnsField;
-    }
-
-    public void setColumnsField(ArrayList<String> columnsField) {
-        this.columnsField = columnsField;
-    }
 
     public LinkedList<Double> getObjectiveFunction() {
         return objectiveFunction;
@@ -168,5 +190,8 @@ public class LPModel {
         this.operatorConstraints = operatorConstraints;
     }
 
+    public String getOutput() {
+        return standardizedModel.getOutput();
+    }
 
 }

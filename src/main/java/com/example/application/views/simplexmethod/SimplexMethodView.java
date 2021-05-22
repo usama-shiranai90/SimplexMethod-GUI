@@ -73,6 +73,8 @@ public class SimplexMethodView extends LitTemplate {
     private TextArea lpmodeloutput;
 
     private Grid<String> vaadinGrid;
+    @Id("simplexTableoutput")
+    private TextArea simplexTableoutput;
 
     public SimplexMethodView() {
 //        topHL.getStyle().set("border", "1px solid #9E9E9E");
@@ -91,48 +93,46 @@ public class SimplexMethodView extends LitTemplate {
     }
 
     private void performSampleAction(ClickEvent<Button> buttonClickEvent) {
+
         LPModel model = new LPModel();  // Existing problem Solve Follow
         lpmodeloutput.setValue(model.printLPMODEL());
 
         ArrayList<String>[] test = new ArrayList[model.getObjectiveFunction().size()];
 
 //        Trying to create a grid for Constraints but failed.
-            /*
 
-                    for (int row = 0; row < model.getObjectiveFunction().size(); row++) {
+        for (int row = 0; row < model.getObjectiveFunction().size(); row++) {
 
+            for (int col = 0; col < model.getLsConstraint().size(); col++) {
+                System.out.println("row = " + row + " col = " + col);
+                System.out.println("model.getLsConstraint().get(row).get(col) = " + model.getLsConstraint().get(col).get(row));
+                if (test[row] == null) {
+                    test[row] = new ArrayList<>();
+                }
+                test[row].add(String.valueOf(model.getLsConstraint().get(col).get(row)));
+            }
+        }
 
-                        for (int col = 0; col < model.getLsConstraint().size(); col++) {
-                            System.out.println("row = " + row + " col = " + col);
-                            System.out.println("model.getLsConstraint().get(row).get(col) = " + model.getLsConstraint().get(col).get(row));
-                            if (test[row] == null) {
-                                test[row] = new ArrayList<>();
-                            }
-                            test[row].add(String.valueOf(model.getLsConstraint().get(col).get(row)));
-                        }
-                    }
+/*        vaadinGrid = new Grid<>();
+        vaadinGrid.removeAllColumns();
 
-                    vaadinGrid = new Grid<>();
-                    vaadinGrid.removeAllColumns();
+        vaadinGrid.setItems(String.valueOf(test[0].stream().iterator()), test[1].toString(), test[2].toString(), test[3].toString());
 
-                    vaadinGrid.setItems(String.valueOf(test[0].stream().iterator()), test[1].toString(), test[2].toString(), test[3].toString());
+        for (int i = 0; i < test.length; i++) {
+            vaadinGrid.addColumn(String::valueOf).setHeader("x" + (i + 1));
+        }
 
-                    for (int i = 0; i < test.length; i++) {
-                        vaadinGrid.addColumn(String::valueOf).setHeader("x" + (i + 1));
-                    }
+        vaadinGrid.setWidth("55%");
+        vaadinGrid.setSelectionMode(Grid.SelectionMode.NONE);
+        vaadinGrid.setHeight("270px");
+        vaadinGrid.setDetailsVisibleOnClick(false);
+        vaadinGrid.setDetailsVisibleOnClick(false);
+        vaadinGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
+        vaadinGrid.getElement().setAttribute("slot", "vaadinGrid");
+        vaadinGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
+        getElement().appendChild(vaadinGrid.getElement());*/
 
-                    vaadinGrid.setWidth("55%");
-                    vaadinGrid.setSelectionMode(Grid.SelectionMode.NONE);
-                    vaadinGrid.setHeight("270px");
-                    vaadinGrid.setDetailsVisibleOnClick(false);
-                    vaadinGrid.setDetailsVisibleOnClick(false);
-                    vaadinGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-
-                    vaadinGrid.getElement().setAttribute("slot", "vaadinGrid");
-                    vaadinGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
-                    getElement().appendChild(vaadinGrid.getElement());
-            */
 
     }
 
@@ -241,6 +241,10 @@ public class SimplexMethodView extends LitTemplate {
             LPModel model = new LPModel(objectiveFunction, leftConstraint, rightConstraint);
             lpmodeloutput.setValue(model.printLPMODEL());
 
+
+            simplexTableoutput.setValue(model.getOutput());
+
+
         });
 
     }
@@ -266,4 +270,10 @@ public class SimplexMethodView extends LitTemplate {
     public void setTotalConstraints(int totalConstraints) {
         this.totalConstraints = totalConstraints;
     }
+
+
+
+
 }
+
+

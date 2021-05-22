@@ -6,10 +6,6 @@ public class Assets {
         LESS_THAN , EQUALS_TO , GREATER_THAN
     }
 
-    enum ProblemTypeConstraints{
-        MAXIMIZATION ,MINIMIZATION
-    }
-
     enum Optimality{
         ISOPTIMAL , ISNOTOPTIMAL , ERROR
     }

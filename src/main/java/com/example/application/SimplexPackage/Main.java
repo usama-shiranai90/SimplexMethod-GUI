@@ -1,3 +1,13 @@
+/**
+ * Test value :
+ * Z =  2100.0x1 + 6400.0x2 + 5500.0x3 + 6000.0x4
+ * <p>
+ * S1      12x1 + 8x2 + 7x3 + 8x4 + S1 ≤ 85
+ * S2      3x1 + 9x2 + 11x3 + 13x4 + S2 ≤ 75
+ * S3      4x1 +6x2 + 8x3 + 19x4 + S3 ≤ 122
+ * S4      15x1 + 11x2 + 13x3 + 17x4 + S4 ≤ 90
+ */
+
 package com.example.application.SimplexPackage;
 
 import java.util.ArrayList;
@@ -6,27 +16,20 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-/*
-Z =  2100.0x1 + 6400.0x2 + 5500.0x3 + 6000.0x4
-
-S1      12x1 + 8x2 + 7x3 + 8x4 + S1 ≤ 85
-S2      3x1 + 9x2 + 11x3 + 13x4 + S2 ≤ 75
-S3      4x1 +6x2 + 8x3 + 19x4 + S3 ≤ 122
-S4      15x1 + 11x2 + 13x3 + 17x4 + S4 ≤ 90   */
 public class Main {
 
     public static void main(String[] args) {
-        int c;
+        int check;
         Scanner input = new Scanner(System.in);
         System.out.println("""
                 Welcome To Simplex Method Solver (Maximization)
                 1.Press 1 for executing existing problem sample
                 2.Create your own problem(LP)""");
+        check = input.nextInt();
 
-        c = input.nextInt();
-
-        if (c == 1) {
-/*            System.out.println("-----------------Maximization LP-Model-----------------\n" +
+        if (check == 1) {
+/*            System.out.println("
+                    -----------------Maximization LP-Model-----------------\n" +
                     "Z =  2100.0x1 + 6400.0x2 + 5500.0x3 + 6000.0x4\n" +
                     "S1      12x1 + 8x2 + 7x3 + 8x4 + S1 ≤ 85\n" +
                     "S2      3x1 + 9x2 + 11x3 + 13x4 + S2 ≤ 75\n" +
@@ -35,16 +38,10 @@ public class Main {
                     "------------------------------------------------------");*/
 
             LPModel model = new LPModel();  // Existing problem Solve Follow
-            System.out.println("model.getLsConstraint().size() = " + model.getLsConstraint().size());
-            System.out.println("model.getRsConstraint().size() = " + model.getRsConstraint().size());
-            System.out.println(model.printLPMODEL());
+//            System.out.println(model.printLPMODEL());
 
-            StandardizedModel standardizedModel = new StandardizedModel(
-                    model.getObjectiveFunction(), model.getLsConstraint(),
-                    model.getOperatorConstraints(), model.getRsConstraint()
-            );
-        } else if (c == 2) {
-//            List<Double> objectfunction  , Double[][] lconstraint , List<Double> rconstraint
+        } else if (check == 2) {
+
             System.out.print("Enter No of Decision Variables :");
             int maxDecisionVar = input.nextInt();
             System.out.print("Enter No of Constraints Variables :");
@@ -72,17 +69,7 @@ public class Main {
                 rightConstraint.add(input.nextDouble());
             });
 
-/*            System.out.println("objectiveFunction = " + objectiveFunction.toString());
-
-            System.out.println("leftConstraint = ");
-            int count = 0;
-            for (LinkedList<Double> list : leftConstraint) {
-                System.out.println(list + " " + rightConstraint.get(count));
-                count++;
-            }*/
-
-            LPModel model = new LPModel(objectiveFunction,leftConstraint,rightConstraint);
-            System.out.println(model.printLPMODEL());
+            new LPModel(objectiveFunction, leftConstraint, rightConstraint);
 
         }
 
