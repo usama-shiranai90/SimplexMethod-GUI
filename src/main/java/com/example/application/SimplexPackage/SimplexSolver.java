@@ -30,10 +30,9 @@ public class SimplexSolver {
 
     }
 
-    protected String solve() { //initialize
-        String result = null;
+    protected void solve() { //initialize
         while (true) {
-            result = show();
+            show();
             int q = 0;
             // find entering column q
             q = columnEntery();
@@ -52,9 +51,7 @@ public class SimplexSolver {
             // update basis
             basis[leavingP] = q;
 
-            return result;
         }
-        return result;
     }
 
     private int columnEntery() {  // last row ma highest value ly kr aye.
@@ -122,14 +119,14 @@ public class SimplexSolver {
             if (basis[i] < totalFunctionVariables) //   < 4
             {
                 rowField[i] = "x".concat(String.valueOf(basis[i] + 1));
-                builder.append("x_").append(basis[i]).append(" = ").append(tableaux.get(i).get(totalNoConstraints + totalFunctionVariables)).append("\n");
+                builder.append("--------------------------------------------------------------------"+"\n"+"x").append(basis[i] + 1).append(" = ").append(tableaux.get(i).get(totalNoConstraints + totalFunctionVariables)).append(" is the Pivot row").append("\n");
             }
         }
 
 
         builder.append("Base");
         for (String s : columnField) {
-            builder.append(String.format("%7.2s ", s));
+            builder.append(String.format("%10s ", s));
         }
         builder.append("\n");
         for (int i = 0; i <= totalNoConstraints; i++) {
@@ -140,15 +137,13 @@ public class SimplexSolver {
             builder.append("\n");
         }
 
-        endResult.append(builder);
-        optimalSolution =  valueOfZ();
-
+        endResult.append(builder.toString());
+        optimalSolution = valueOfZ();
         return builder.toString();
 
     }
 
     public int getTotalNoConstraints() {
-//        float result = Float.parseFloat(String.format("%.2f", 0.0232));
         return totalNoConstraints;
     }
 

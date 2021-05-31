@@ -10,7 +10,9 @@ import java.util.LinkedList;
 public class StandardizedModel {
 
     private ArrayList<ArrayList<Double>> tableaux;
-    private String tablexuOutput;
+
+    private final String tableOutput;
+    private final double optimalSolution;
 
     public StandardizedModel(LinkedList<Double> objectiveFunction, LinkedList<LinkedList<Double>> lsConstraint, LinkedList<Double> rsConstraint) {
 
@@ -71,15 +73,21 @@ public class StandardizedModel {
 
         }
 
+        System.out.println("slackIncrement = " + slackIncrement);
+
         SimplexSolver simplexSolver = new SimplexSolver(tableaux, totalFunctionVariables, totalNoConstraints, rowField, columnField);
-        tablexuOutput = simplexSolver.getEndResult().toString();
+        simplexSolver.solve();
+        System.out.println("simplexSolver = " + simplexSolver.getEndResult().toString());
+        System.out.println("simplexSolver.getOptimalSolution() = " + simplexSolver.getOptimalSolution());
+
+        tableOutput = simplexSolver.getEndResult().toString();
         optimalSolution = simplexSolver.getOptimalSolution();
     }
 
-    private double optimalSolution;
+
 
     public String getOutputTableux() {
-        return tablexuOutput;
+        return tableOutput;
     }
 
     public double getOptimalSolutionValue() {

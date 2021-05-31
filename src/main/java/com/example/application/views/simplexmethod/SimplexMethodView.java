@@ -21,6 +21,7 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -107,8 +108,8 @@ public class SimplexMethodView extends LitTemplate {
         for (int row = 0; row < model.getObjectiveFunction().size(); row++) {
 
             for (int col = 0; col < model.getLsConstraint().size(); col++) {
-                System.out.println("row = " + row + " col = " + col);
-                System.out.println("model.getLsConstraint().get(row).get(col) = " + model.getLsConstraint().get(col).get(row));
+//                System.out.println("row = " + row + " col = " + col);
+//                System.out.println("model.getLsConstraint().get(row).get(col) = " + model.getLsConstraint().get(col).get(row));
                 if (test[row] == null) {
                     test[row] = new ArrayList<>();
                 }
@@ -224,16 +225,19 @@ public class SimplexMethodView extends LitTemplate {
             });
 
             // LC AND RC
-            IntStream.iterate(0, i -> i + 1).limit(totalConstraints).forEach(in -> {
-
+            int subtractCount = leftCon_TextField.size();
+            for (int i = 0; i < totalConstraints; i++) {
                 leftConstraint.add(new LinkedList<>());
-                IntStream.iterate(0, i -> i + 1).limit(totalDecisionVariables).forEach(z -> {
 
-                    leftConstraint.get(in).add(Double.valueOf(leftCon_TextField.get(z).getValue()));
-                });
+                for (int j = 0; j < totalDecisionVariables; j++) {
+                    int total = leftCon_TextField.size(); // 6
+                    leftConstraint.get(i).add(Double.valueOf(leftCon_TextField.get(total - subtractCount).getValue()));
+                    subtractCount--;
+                }
+                rightConstraint.add(Double.valueOf(rightCon_TextField.get(i).getValue()));
+            }
 
-                rightConstraint.add(Double.valueOf(rightCon_TextField.get(in).getValue()));
-            });
+
 
             LPModel model = new LPModel(objectiveFunction, leftConstraint, rightConstraint);
             lpmodeloutput.setValue(model.printLPMODEL());

@@ -54,7 +54,6 @@ public class LPModel {
         fillOperator(operatorConstraints);
         printLPMODEL();
 
-
         standardizedModel = new StandardizedModel(objectiveFunction , lsConstraint , rsConstraint);
 
     }
@@ -145,7 +144,7 @@ public class LPModel {
              * //                --i;
              */
         }
-        System.out.println(builder.toString());
+//        System.out.println(builder.toString());
         return builder.toString();
     }
 
