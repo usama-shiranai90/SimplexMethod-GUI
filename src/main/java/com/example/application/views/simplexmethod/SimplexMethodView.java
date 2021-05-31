@@ -1,6 +1,7 @@
 package com.example.application.views.simplexmethod;
 
 import com.example.application.SimplexPackage.LPModel;
+import com.example.application.SimplexPackage.SimplexSolver;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -75,6 +76,8 @@ public class SimplexMethodView extends LitTemplate {
     private Grid<String> vaadinGrid;
     @Id("simplexTableoutput")
     private TextArea simplexTableoutput;
+    @Id("answer")
+    private TextField answer;
 
     public SimplexMethodView() {
 //        topHL.getStyle().set("border", "1px solid #9E9E9E");
@@ -132,7 +135,6 @@ public class SimplexMethodView extends LitTemplate {
         vaadinGrid.getElement().setAttribute("slot", "vaadinGrid");
         vaadinGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
         getElement().appendChild(vaadinGrid.getElement());*/
-
 
     }
 
@@ -215,16 +217,11 @@ public class SimplexMethodView extends LitTemplate {
         calculateSimplex.addClickListener(buttonClickEvent1 -> {
 
 
-            System.out.println("totalDecisionVariables = " + totalDecisionVariables);
-            System.out.println("totalConstraints = " + totalConstraints);
-
             // OF
             IntStream.iterate(0, i -> i + 1).limit(totalDecisionVariables).forEach(value -> {
 
                 objectiveFunction.add(Double.valueOf(objectiveFunction_TextField.get(value).getValue()));
             });
-
-            System.out.println("objectiveFunction = " + objectiveFunction.toString() + " \t Size " + objectiveFunction.size());
 
             // LC AND RC
             IntStream.iterate(0, i -> i + 1).limit(totalConstraints).forEach(in -> {
@@ -242,8 +239,8 @@ public class SimplexMethodView extends LitTemplate {
             lpmodeloutput.setValue(model.printLPMODEL());
 
 
-            simplexTableoutput.setValue(model.getOutput());
-
+            simplexTableoutput.setValue(model.getOutputTableux());
+            answer.setValue(String.valueOf(model.getOptimalSolutionValue()));
 
         });
 
@@ -270,8 +267,6 @@ public class SimplexMethodView extends LitTemplate {
     public void setTotalConstraints(int totalConstraints) {
         this.totalConstraints = totalConstraints;
     }
-
-
 
 
 }

@@ -122,11 +122,9 @@ public class LPModel {
                     builder.append(" + ");
                 }
                 if (itemInRow == lsConstraint.get(rowIndex).size() - 1) { // 2 == 2
-                    builder.append(operatorConstraints.get(2)).append("  ")
-                            .append(rsConstraint.get(rowIndex)).append("\n");
+                    builder.append("≤").append("  ").append(rsConstraint.get(rowIndex)).append("\n");
                 }
             }
-
             /**    Comment section of printing LP Model Table.
              * if (col < lsConstraint.size()) {
              *                 System.out.println("chla");
@@ -146,7 +144,6 @@ public class LPModel {
              *                 row++;
              * //                --i;
              */
-
         }
         System.out.println(builder.toString());
         return builder.toString();
@@ -190,8 +187,12 @@ public class LPModel {
         this.operatorConstraints = operatorConstraints;
     }
 
-    public String getOutput() {
-        return standardizedModel.getOutput();
+    public String getOutputTableux() {
+        return standardizedModel.getOutputTableux();
+    }
+
+    public double getOptimalSolutionValue() {
+        return standardizedModel.getOptimalSolutionValue();
     }
 
 }

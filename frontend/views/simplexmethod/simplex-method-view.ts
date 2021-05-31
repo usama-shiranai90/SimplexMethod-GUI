@@ -4,6 +4,7 @@ import '@vaadin/vaadin-text-field/src/vaadin-text-area.js';
 import '@vaadin/vaadin-ordered-layout/src/vaadin-vertical-layout.js';
 import '@vaadin/vaadin-button/src/vaadin-button.js';
 import '@polymer/iron-icon/iron-icon.js';
+import '@vaadin/vaadin-text-field/src/vaadin-text-field.js';
 
 @customElement('simplex-method-view')
 export class SimplexMethodView extends LitElement {
@@ -43,9 +44,10 @@ export class SimplexMethodView extends LitElement {
    <h3>Simplex Table</h3>
    <vaadin-text-area style="width: 100%;" id="simplexTableoutput" readonly></vaadin-text-area>
   </vaadin-vertical-layout>
-  <div style="flex-grow:1; width:100%;" id="grid-wrapper">
-   <slot name="vaadinGrid"></slot>
-  </div>
+  <vaadin-vertical-layout style="align-items: center; justify-content: space-between; height: 100%; width: 100%; margin-right: var(--lumo-space-m); margin-left: var(--lumo-space-m);">
+   <h3>Optimal Solution</h3>
+   <vaadin-text-field id="answer" style="flex-grow: 0; align-self: center;" readonly placeholder="Value"></vaadin-text-field>
+  </vaadin-vertical-layout>
  </vaadin-horizontal-layout>
 </div>
 `;

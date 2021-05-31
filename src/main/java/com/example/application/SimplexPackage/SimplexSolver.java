@@ -11,8 +11,11 @@ public class SimplexSolver {
     private final int totalFunctionVariables;  // number of original variables   ->  Objective function ka variables ko show kary ga.
     ArrayList<ArrayList<Double>> tableaux;
 
-    public SimplexSolver(ArrayList<ArrayList<Double>> tableaux, int total_variables, int totalCon, String[] row, String[] column) {
+    private double optimalSolution;
+    private StringBuilder endResult;
 
+    public SimplexSolver(ArrayList<ArrayList<Double>> tableaux, int total_variables, int totalCon, String[] row, String[] column) {
+        endResult = new StringBuilder();
         totalFunctionVariables = total_variables;
         totalNoConstraints = totalCon;
 
@@ -59,7 +62,7 @@ public class SimplexSolver {
         for (int j = 1; j < totalNoConstraints + totalFunctionVariables; j++)
             if (tableaux.get(totalNoConstraints).get(j) > tableaux.get(totalNoConstraints).get(temp)) {
                 temp = j;
-                System.out.println("highest value = " + tableaux.get(totalNoConstraints).get(j));
+//                tableaux.get(totalNoConstraints).get(j);
             }
 
 
@@ -130,12 +133,16 @@ public class SimplexSolver {
         }
         builder.append("\n");
         for (int i = 0; i <= totalNoConstraints; i++) {
-            builder.append(rowField[i] + "   ");
+            builder.append(rowField[i]).append("   ");
             for (int j = 0; j <= totalNoConstraints + totalFunctionVariables; j++) {
                 builder.append(String.format("%7.2f ", tableaux.get(i).get(j)));
             }
             builder.append("\n");
         }
+
+        endResult.append(builder);
+        optimalSolution =  valueOfZ();
+
         return builder.toString();
 
     }
@@ -143,6 +150,18 @@ public class SimplexSolver {
     public int getTotalNoConstraints() {
 //        float result = Float.parseFloat(String.format("%.2f", 0.0232));
         return totalNoConstraints;
+    }
+
+    public StringBuilder getEndResult() {
+        return endResult;
+    }
+
+    public void setEndResult(StringBuilder endResult) {
+        this.endResult = endResult;
+    }
+
+    public double getOptimalSolution() {
+        return optimalSolution;
     }
 
     public int getTotalFunctionVariables() {
